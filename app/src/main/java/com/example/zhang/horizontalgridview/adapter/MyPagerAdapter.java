@@ -1,4 +1,4 @@
-package com.example.zhang.horizontalgridview;
+package com.example.zhang.horizontalgridview.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

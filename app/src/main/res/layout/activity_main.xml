@@ -11,6 +11,7 @@
     android:orientation="vertical"
     tools:context="com.example.zhang.horizontalgridview.MainActivity">
 
+    <include layout="@layout/test_actionbar"/>
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
@@ -25,55 +26,6 @@
         android:layout_weight="1"
         ></android.support.v4.view.ViewPager>
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <RadioButton
-            android:text="推荐"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:drawableTop="@drawable/home"
-            android:layout_height="match_parent" />
-
-        <RadioButton
-            android:text="游戏"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:drawableTop="@drawable/game"
-            android:layout_height="match_parent" />
-        <RadioButton
-            android:text="软件"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:drawableTop="@drawable/software"
-            android:layout_height="match_parent" />
-        <RadioButton
-            android:text="热点"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:drawableTop="@drawable/appgroup"
-            android:layout_height="match_parent" />
-
-        <RadioButton
-            android:text="管理"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:drawableTop="@drawable/manager"
-            android:layout_height="match_parent" />
-
-    </RadioGroup>
     <com.ashokvarma.bottomnavigation.BottomNavigationBar
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
