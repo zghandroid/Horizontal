@@ -1,49 +1,44 @@
 package com.example.zhang.horizontalgridview;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.zhang.horizontalgridview.adapter.MyFragmentAdapter;
-import com.example.zhang.horizontalgridview.adapter.MyPagerAdapter;
-import com.example.zhang.horizontalgridview.fragment.MyFirstFragment;
-import com.example.zhang.horizontalgridview.fragment.SecondFragment;
-import com.example.zhang.horizontalgridview.fragment.ThirdFrament;
+import com.example.zhang.horizontalgridview.fragment.home.GameFragment;
+import com.example.zhang.horizontalgridview.fragment.home.HotPointFragment;
+import com.example.zhang.horizontalgridview.fragment.home.ManagerFragment;
+import com.example.zhang.horizontalgridview.fragment.home.RecommFragment;
+import com.example.zhang.horizontalgridview.fragment.home.SolftFragmnet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener, View.OnScrollChangeListener, ViewPager.OnPageChangeListener {
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener, ViewPager.OnPageChangeListener {
+
     private List<Fragment> fragments;
     private MyFragmentAdapter adapter;
     private BottomNavigationBar navigationBar;
+    private ViewPager viewPager;
     @Override
     public void onCreate(Bundle savedInstanceState,String s) {
         setContentView(R.layout.activity_main);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager)findViewById(R.id.viewpager);
         fragments=new ArrayList<>();
-        fragments.add(new MyFirstFragment());
-        fragments.add(new SecondFragment());
-        fragments.add(new ThirdFrament());
+        fragments.add(new HotPointFragment());
+        fragments.add(new RecommFragment());
+        fragments.add(new GameFragment());
+        fragments.add(new ManagerFragment());
+        fragments.add(new SolftFragmnet());
         adapter = new MyFragmentAdapter(getSupportFragmentManager(),fragments);
         viewPager.setAdapter(adapter);
-        tabLayout= (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager,true);
-        for(int i=0;i<fragments.size();i++){
-            tabLayout.getTabAt(i).setText("测试"+i);
-        }
-
         initView();
         viewPager.addOnPageChangeListener(this);
     }
+
 
     private void initView() {
         navigationBar = (BottomNavigationBar) findViewById(R.id.navigation_bar);
@@ -64,10 +59,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabSelected(int position) {
-
-        if(position<3) {
             viewPager.setCurrentItem(position);
-        }
+
     }
 
     @Override
@@ -95,8 +88,4 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     }
 
-    @Override
-    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-
-    }
 }
