@@ -41,6 +41,7 @@
 
     </LinearLayout>
     <ImageView
+        android:id="@+id/share"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:src="@mipmap/common_icon_search_qrcode"

@@ -17,6 +17,8 @@ import com.example.zhang.horizontalgridview.fragment.home.SolftFragmnet;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 
@@ -92,6 +94,5 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public void onPageScrollStateChanged(int state) {
 
     }
-
 
 }
