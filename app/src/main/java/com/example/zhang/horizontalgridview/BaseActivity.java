@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+
 /**
  * Created by 12345 on 2017/2/14.
  */
@@ -45,4 +47,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
     public abstract void onCreate(Bundle savedInstanceState,String s);
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JCVideoPlayerStandard.releaseAllVideos();
+    }
 }

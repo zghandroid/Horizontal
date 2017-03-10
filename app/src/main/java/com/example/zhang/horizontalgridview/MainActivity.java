@@ -1,5 +1,6 @@
 package com.example.zhang.horizontalgridview;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -15,6 +16,8 @@ import com.example.zhang.horizontalgridview.fragment.home.SolftFragmnet;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener, ViewPager.OnPageChangeListener {
@@ -37,6 +40,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         viewPager.setAdapter(adapter);
         initView();
         viewPager.addOnPageChangeListener(this);
+        ProgressDialog progressDialog = new ProgressDialog(this);
+
     }
 
 
@@ -87,5 +92,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public void onPageScrollStateChanged(int state) {
 
     }
+
 
 }
