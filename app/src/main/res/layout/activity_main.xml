@@ -5,21 +5,28 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.example.zhang.horizontalgridview.MainActivity">
+    tools:context="com.example.zhang.horizontalgridview.ui.MainActivity">
 
+    <include layout="@layout/test_actionbar"/>
 
-
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/my_draw"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        ></android.support.v4.view.ViewPager>
+        android:layout_height="match_parent">
 
-    <com.ashokvarma.bottomnavigation.BottomNavigationBar
-        android:id="@+id/navigation_bar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"></com.ashokvarma.bottomnavigation.BottomNavigationBar>
+        <include
+            android:id="@+id/draw_main"
+            layout="@layout/draw_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <include
+            android:id="@+id/draw_start"
+            layout="@layout/draw_start"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            />
+    </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>
