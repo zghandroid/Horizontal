@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.example.zhang.horizontalgridview"
@@ -15,6 +15,9 @@ android {
             'ZhanQi'{
                 buildConfigField("String","ZHANQISERVER","\"http://www.zhanqi.tv/api/\"")
             }
+        'QQNBA'{
+            buildConfigField("String","QQNBASERVER","\"http://sportsnba.qq.com\"")
+        }
     }
     buildTypes {
         release {
@@ -63,4 +66,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.facebook.fresco:imagepipeline-okhttp3:1.2.0'
     compile 'com.facebook.fresco:fresco:1.2.0'
+    compile project(':PushSDK')
 }

@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by qy on 2017/3/6.
  */
 
-public abstract class MyBaseAdapter<T> extends BaseAdapter {
+public abstract class MyBaseAdapter<T> extends BaseAdapter{
 
     protected List<T> mData;
     protected int layoutId;

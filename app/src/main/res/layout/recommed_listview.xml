@@ -9,7 +9,7 @@
         android:layout_gravity="center"
         android:id="@+id/my_image_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         fresco:placeholderImage="@mipmap/ic_launcher"
     />
 </LinearLayout>

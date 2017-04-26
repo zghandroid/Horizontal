@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.zhang.horizontalgridview.R;
+import com.umeng.message.PushAgent;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
@@ -47,6 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }else{
             onCreate(savedInstanceState,"aa");
         }
+        PushAgent.getInstance(this).onAppStart();
     }
     public abstract void onCreate(Bundle savedInstanceState,String s);
 

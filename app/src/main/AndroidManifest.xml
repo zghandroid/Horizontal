@@ -32,6 +32,14 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:replace="android:icon, android:theme"
         >
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="58fff6b7310c933810001127">
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="150198dd6eec172ba163ce02707d11fa">
+        </meta-data>
         <!--分享所需Activity-->
         <activity
             android:name="com.mob.tools.MobUIShell"

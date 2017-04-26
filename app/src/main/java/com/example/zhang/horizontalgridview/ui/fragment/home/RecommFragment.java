@@ -57,4 +57,6 @@ public class RecommFragment extends BaseFragment implements RecommendView{
     public void showError(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT);
     }
+
+
 }
