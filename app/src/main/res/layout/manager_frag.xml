@@ -9,10 +9,14 @@
         android:gravity="center"
         android:src="@mipmap/ic_launcher"
         />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/manager_recycle"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/test_swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/manager_recycle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

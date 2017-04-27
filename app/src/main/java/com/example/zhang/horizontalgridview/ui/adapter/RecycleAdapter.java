@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.zhang.horizontalgridview.R;
+import com.example.zhang.horizontalgridview.base.BaseRecycleAdapter;
 import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
 import com.example.zhang.horizontalgridview.http.bean.zhanqi.ListsBean;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -19,43 +20,17 @@ import java.util.List;
  * Created by 12345 on 2017/4/17.
  */
 
-public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
-
-    private int layout;
-    private List<ListsBean> data;
-
-
-    public RecycleAdapter( List<ListsBean> data,int layout) {
-        this.layout = layout;
-        this.data = data;
+public class RecycleAdapter extends BaseRecycleAdapter<ListsBean> {
+    public RecycleAdapter(List<ListsBean> data, Context context,int layout) {
+        super(data,context,layout);
     }
+
 
     @Override
-
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyViewHolder myViewHolder = new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
-        return myViewHolder;
+    public void bindData(BaseRecycleAdapter<ListsBean>.MyBaseViewHolder holder, ListsBean listsBean) {
+        SimpleDraweeView  simpleDraweeView=holder.getView(R.id.my_image_view);
+        Uri uri = Uri.parse(listsBean.getBpic());
+        simpleDraweeView.setImageURI(uri);
     }
-
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Uri uri = Uri.parse(data.get(position).getBpic());
-        holder.imageView.setImageURI(uri);
-    }
-
-    @Override
-    public int getItemCount() {
-        return data != null ? data.size() : 0;
-    }
-
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        SimpleDraweeView imageView;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            imageView = (SimpleDraweeView) itemView.findViewById(R.id.my_image_view);
-        }
-    }
-
 
 }

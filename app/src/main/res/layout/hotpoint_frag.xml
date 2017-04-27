@@ -21,7 +21,7 @@
         <ImageView
             android:layout_marginTop="8.5dp"
             android:id="@+id/four_current"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:src="@mipmap/three_current"
             />
@@ -31,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="fixed"
-            app:tabBackground="@drawable/tablayout_tab_back"
             android:background="#5E5C9E"
             />
     </FrameLayout>

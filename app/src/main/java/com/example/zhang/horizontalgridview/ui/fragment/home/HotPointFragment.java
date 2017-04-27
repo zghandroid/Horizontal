@@ -89,8 +89,6 @@ public class HotPointFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        Log.e("aa","position:::"+position+"::offset::"+positionOffset);
-        Log.e("aa","set:::"+current.getWidth()*(position+positionOffset));
         FrameLayout.LayoutParams params= (FrameLayout.LayoutParams) current.getLayoutParams();
         params.leftMargin= (int) (current.getWidth()*(position+positionOffset));
         current.setLayoutParams(params);
