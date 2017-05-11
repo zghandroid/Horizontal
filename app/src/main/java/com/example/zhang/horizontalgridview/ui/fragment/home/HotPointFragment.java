@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.example.zhang.horizontalgridview.R;
 import com.example.zhang.horizontalgridview.ui.adapter.MyFragmentAdapter;
 import com.example.zhang.horizontalgridview.ui.fragment.MyFirstFragment;
 import com.example.zhang.horizontalgridview.ui.fragment.SecondFragment;
 import com.example.zhang.horizontalgridview.ui.fragment.ThirdFrament;
+import com.example.zhang.horizontalgridview.ui.mycustomview.MyTestScrollView;
+import com.example.zhang.horizontalgridview.util.L;
 import com.recker.flybanner.FlyBanner;
 
 import java.lang.reflect.Field;
@@ -43,11 +46,12 @@ public class HotPointFragment extends Fragment implements View.OnClickListener, 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.hotpoint_frag, container, false);
+        final View view = inflater.inflate(R.layout.hotpoint_frag, container, false);
         viewPager = (ViewPager)view. findViewById(R.id.viewpager_frag);
         tabLayout= (TabLayout)view.findViewById(R.id.tabLayout);
         banner = (FlyBanner) view.findViewById(R.id.banner_1);
         current = (ImageView) view.findViewById(R.id.four_current);
+
 
         fragments=new ArrayList<>();
         fragments.add(new MyFirstFragment());
@@ -73,7 +77,6 @@ public class HotPointFragment extends Fragment implements View.OnClickListener, 
         imgesUrl.add("https://img2.zhanqi.tv/uploads/2016/09/recommendspic-2016092917571670724.jpeg");
 
         banner.setImagesUrl(imgesUrl);
-
         banner.setOnItemClickListener(new FlyBanner.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

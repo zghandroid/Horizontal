@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.zhang.horizontalgridview.R;
+import com.example.zhang.horizontalgridview.ui.mycustomview.Bezier;
+import com.example.zhang.horizontalgridview.ui.mycustomview.TestView;
 import com.umeng.message.PushAgent;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
@@ -44,7 +46,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(!checkNetworkState()){
-            setContentView(R.layout.networ_faile);
+//            TestView testView = new TestView(this);
+//            setContentView(testView);
+            Bezier bezier = new Bezier(this);
+            setContentView(bezier);
         }else{
             onCreate(savedInstanceState,"aa");
         }

@@ -1,11 +1,12 @@
 package com.example.zhang.horizontalgridview.ui;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,14 +20,19 @@ import com.example.zhang.horizontalgridview.ui.fragment.home.ManagerFragment;
 import com.example.zhang.horizontalgridview.ui.fragment.home.RecommFragment;
 import com.example.zhang.horizontalgridview.ui.fragment.home.SolftFragmnet;
 import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
+import com.example.zhang.horizontalgridview.ui.mycustomview.MyProgress;
 import com.example.zhang.horizontalgridview.util.RetrofitUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 
 
@@ -39,6 +45,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private DrawerLayout drawerLayout;
     private ImageView share;
     private ImageView my;
+    private Timer timer;
+    private MyProgress progress;
     @Override
     public void onCreate(Bundle savedInstanceState,String s) {
         setContentView(R.layout.activity_main);
@@ -53,15 +61,29 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         viewPager.setAdapter(adapter);
         initView();
         viewPager.addOnPageChangeListener(this);
-        ProgressDialog progressDialog = new ProgressDialog(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.my_draw);
         share = (ImageView)findViewById(R.id.share);
         share.setOnClickListener(this);
         my = (ImageView) findViewById(R.id.my);
         my.setOnClickListener(this);
+        testTimer();
+        progress=MyProgress.show(this,"正在加载",false,null);
 
     }
 
+    private void testTimer(){
+        timer=new Timer();
+        TimerTask timerTask=new TimerTask() {
+            @Override
+            public void run() {
+                if(progress!=null&&progress.isShowing()){
+                    progress.dismiss();
+                }
+                Log.e("aaa","计时器");
+            }
+        };
+        timer.schedule(timerTask,2000);
+    }
 
     private void initView() {
         navigationBar = (BottomNavigationBar) findViewById(R.id.navigation_bar);
@@ -178,4 +200,22 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         retrofitUtils.getMovie(observer, 0, 10);
     }
 
+    public void testRxJava(){
+        Observable.just("....").subscribeOn(new Scheduler() {
+            @Override
+            public Worker createWorker() {
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
 }

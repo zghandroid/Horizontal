@@ -15,6 +15,8 @@ import com.example.zhang.horizontalgridview.ui.Presenter.RecommendPresenter;
 import com.example.zhang.horizontalgridview.ui.adapter.RecommendAdpter;
 import com.example.zhang.horizontalgridview.ui.fragment.BaseFragment;
 import com.example.zhang.horizontalgridview.ui.view.RecommendView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.util.List;
 
@@ -22,17 +24,18 @@ import java.util.List;
  * Created by 12345 on 2017/3/3.
  */
 
-public class RecommFragment extends BaseFragment implements RecommendView{
-    private ListView listView;
+public class RecommFragment extends BaseFragment implements RecommendView , PullToRefreshBase.OnRefreshListener2<ListView>{
+    private PullToRefreshListView listView;
     private RecommendAdpter adpter;
     private RecommendPresenter presenter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recom_frag, container, false);
-        listView = (ListView) view.findViewById(R.id.recomd_listview);
+        listView = (PullToRefreshListView) view.findViewById(R.id.recomd_listview);
         adpter = new RecommendAdpter(null, R.layout.recommed_listview);
         listView.setAdapter(adpter);
+        listView.setOnRefreshListener(this);
         presenter = new RecommendPresenter(this, getContext());
         presenter.init();
         return view;
@@ -45,12 +48,10 @@ public class RecommFragment extends BaseFragment implements RecommendView{
 
     @Override
     public void showLoading(String msg) {
-        showDialog(msg);
     }
 
     @Override
     public void hideLoading() {
-        heidDialog();
     }
 
     @Override
@@ -59,4 +60,14 @@ public class RecommFragment extends BaseFragment implements RecommendView{
     }
 
 
+
+    @Override
+    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+    }
 }

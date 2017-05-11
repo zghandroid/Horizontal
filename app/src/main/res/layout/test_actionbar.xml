@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="阴阳西游"
+            android:text="这是个测试"
             />
         <ImageView
             android:layout_width="wrap_content"

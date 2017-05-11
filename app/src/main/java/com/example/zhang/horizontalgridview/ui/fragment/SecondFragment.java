@@ -8,6 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.zhang.horizontalgridview.R;
+import com.example.zhang.horizontalgridview.ui.mycustomview.PieData;
+import com.example.zhang.horizontalgridview.ui.mycustomview.PieView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
@@ -17,6 +22,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
  */
 
 public class SecondFragment extends Fragment {
+    private PieView pieView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,10 +32,15 @@ public class SecondFragment extends Fragment {
     }
 
     private void init(View view) {
-        JCVideoPlayerStandard jcVideoPlayerStandard = (JCVideoPlayerStandard) view.findViewById(R.id.videoplayer);
-        jcVideoPlayerStandard.setUp("http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4"
-                , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "测试");
-        jcVideoPlayerStandard.thumbImageView.setImageResource(R.mipmap.ic_launcher);
+        pieView = (PieView) view.findViewById(R.id.mPieView);
+        ArrayList<PieData> data = new ArrayList<>();
+        for(int i=0;i<10;i++){
+            PieData pieData=new PieData("11",30+i*10);
+            data.add(pieData);
+        }
+        pieView.setData(data);
+
+
     }
 
     @Override
@@ -47,6 +58,5 @@ public class SecondFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        JCVideoPlayer.releaseAllVideos();
     }
 }

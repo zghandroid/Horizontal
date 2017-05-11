@@ -13,15 +13,19 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zhang.horizontalgridview.R;
+import com.example.zhang.horizontalgridview.base.HeaderAndFooterWrapper;
 import com.example.zhang.horizontalgridview.http.api.RequestCallBack;
 import com.example.zhang.horizontalgridview.http.api.zhanqi.ZhanQiService;
 import com.example.zhang.horizontalgridview.http.bean.zhanqi.HotLive;
@@ -47,7 +51,10 @@ public class ManagerFragment extends Fragment implements View.OnClickListener, R
     private RecyclerView recyclerView;
     private RecycleAdapter adpter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    HeaderAndFooterWrapper mHeaderAndFooterWrapper;
     int a=0;
+    private LinearLayoutManager mLayoutManager;
+    private int mItemCount, mLastCompletely, mLastLoad;
     @Nullable
     @Override
 
@@ -67,19 +74,69 @@ public class ManagerFragment extends Fragment implements View.OnClickListener, R
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         //recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(adpter);
+         mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adpter);
+        final ImageView t2 = new ImageView(getContext());
+        t2.setImageResource(R.mipmap.ic_launcher);
+        mHeaderAndFooterWrapper.addHeaderView(t2);
+        recyclerView.setAdapter(mHeaderAndFooterWrapper);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                     mLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                    mItemCount = mLayoutManager.getItemCount();
+                    mLastCompletely = mLayoutManager.findLastCompletelyVisibleItemPosition();
+                } else {
+                    return;
+                }
+
+                if (mLastLoad != mItemCount && mItemCount == mLastCompletely + 1) {
+                    mLastLoad = mItemCount;
+                    onLoadMore();
+                }
+
+            }
+        });
         ZhanQiService.getHotLive(new RequestCallBack<HotLive>() {
             @Override
             public void OnSuccess(List<HotLive> t) {
-                adpter.addRes(t.get(a).getLists());
+                mHeaderAndFooterWrapper.addRes(t.get(a).getLists());
             }
 
             @Override
             public void Onfaliure(String message) {
-
+                Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
             }
         });
         return view;
+
+    }
+
+    private void onLoadMore() {
+        a++;
+        ZhanQiService.getHotLive(new RequestCallBack<HotLive>() {
+            @Override
+            public void OnSuccess(List<HotLive> t) {
+                if(a>=mHeaderAndFooterWrapper.getItemCount()){
+                    a=0;
+                }
+                mHeaderAndFooterWrapper.addRes(t.get(a).getLists());
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void Onfaliure(String message) {
+                a=0;
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
     }
 
@@ -112,10 +169,10 @@ public class ManagerFragment extends Fragment implements View.OnClickListener, R
         ZhanQiService.getHotLive(new RequestCallBack<HotLive>() {
             @Override
             public void OnSuccess(List<HotLive> t) {
-                if(a>=t.size()){
+                if(a>=mHeaderAndFooterWrapper.getItemCount()){
                     a=0;
                 }
-                adpter.updateRes(t.get(a).getLists());
+                mHeaderAndFooterWrapper.updateRes(t.get(a).getLists());
                 swipeRefreshLayout.setRefreshing(false);
             }
 
@@ -126,4 +183,5 @@ public class ManagerFragment extends Fragment implements View.OnClickListener, R
             }
         });
     }
+
 }

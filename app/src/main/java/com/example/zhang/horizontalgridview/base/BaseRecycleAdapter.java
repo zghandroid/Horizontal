@@ -26,6 +26,26 @@ public abstract class BaseRecycleAdapter<T> extends   RecyclerView.Adapter<Recyc
     private MultiItemTypeSupport multiItemTypeSupport;
     private RecycleAdapter.OnItemClickLitener onItemClickLitener;
 
+    public List<T> getData() {
+        return data;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public LayoutInflater getInflater() {
+        return inflater;
+    }
+
+    public int getLayoutId() {
+        return layoutId;
+    }
+
+    public MultiItemTypeSupport getMultiItemTypeSupport() {
+        return multiItemTypeSupport;
+    }
+
     public void setOnItemClickLitener(RecycleAdapter.OnItemClickLitener onItemClickLitener) {
         this.onItemClickLitener = onItemClickLitener;
     }

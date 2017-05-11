@@ -16,4 +16,5 @@ public interface NBAApi {
      Call<ResultDate> getIndex(@Query("column") String column);
     @GET("/news/item")
     Call<ResultDate> getItem(@Query("column") String column,@Query("articleIds") String articleIds);
+
 }

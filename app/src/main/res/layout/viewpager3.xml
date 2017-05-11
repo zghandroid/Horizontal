@@ -3,10 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.example.zhang.horizontalgridview.ui.mycustomview.TestView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="第三个页面"
-        />
+        android:layout_height="match_parent" />
 </LinearLayout>
