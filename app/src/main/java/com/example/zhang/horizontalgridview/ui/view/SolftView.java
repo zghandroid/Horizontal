@@ -1,6 +1,5 @@
 package com.example.zhang.horizontalgridview.ui.view;
 
-import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
 import com.example.zhang.horizontalgridview.ui.view.base.BaseView;
 
 import java.util.List;

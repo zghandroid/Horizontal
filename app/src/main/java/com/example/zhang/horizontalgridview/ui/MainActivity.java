@@ -1,6 +1,7 @@
 package com.example.zhang.horizontalgridview.ui;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,9 +20,12 @@ import com.example.zhang.horizontalgridview.ui.fragment.home.HotPointFragment;
 import com.example.zhang.horizontalgridview.ui.fragment.home.ManagerFragment;
 import com.example.zhang.horizontalgridview.ui.fragment.home.RecommFragment;
 import com.example.zhang.horizontalgridview.ui.fragment.home.SolftFragmnet;
-import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
 import com.example.zhang.horizontalgridview.ui.mycustomview.MyProgress;
-import com.example.zhang.horizontalgridview.util.RetrofitUtils;
+import com.example.zhang.horizontalgridview.util.L;
+
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +34,22 @@ import java.util.TimerTask;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener, ViewPager.OnPageChangeListener, View.OnClickListener {
@@ -47,42 +63,44 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private ImageView my;
     private Timer timer;
     private MyProgress progress;
+
     @Override
-    public void onCreate(Bundle savedInstanceState,String s) {
+    public void onCreate(Bundle savedInstanceState, String s) {
         setContentView(R.layout.activity_main);
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
-        fragments=new ArrayList<>();
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        fragments = new ArrayList<>();
         fragments.add(new HotPointFragment());
         fragments.add(new RecommFragment());
         fragments.add(new GameFragment());
         fragments.add(new ManagerFragment());
         fragments.add(new SolftFragmnet());
-        adapter = new MyFragmentAdapter(getSupportFragmentManager(),fragments);
+        adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         initView();
         viewPager.addOnPageChangeListener(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.my_draw);
-        share = (ImageView)findViewById(R.id.share);
+        share = (ImageView) findViewById(R.id.share);
         share.setOnClickListener(this);
         my = (ImageView) findViewById(R.id.my);
         my.setOnClickListener(this);
         testTimer();
-        progress=MyProgress.show(this,"正在加载",false,null);
-
+        progress = MyProgress.show(this, "正在加载", false, null);
+        testRxJava3();
     }
 
-    private void testTimer(){
-        timer=new Timer();
-        TimerTask timerTask=new TimerTask() {
+
+    private void testTimer() {
+        timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                if(progress!=null&&progress.isShowing()){
+                if (progress != null && progress.isShowing()) {
                     progress.dismiss();
                 }
-                Log.e("aaa","计时器");
+                Log.e("aaa", "计时器");
             }
         };
-        timer.schedule(timerTask,2000);
+        timer.schedule(timerTask, 2000);
     }
 
     private void initView() {
@@ -92,11 +110,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 .setActiveColor(R.color.colorPrimary)
                 .setInActiveColor("#FFFFFF")
                 .setBarBackgroundColor("#ECECEC");
-        navigationBar.addItem(new BottomNavigationItem(R.drawable.appgroup,"热点"))
-                .addItem(new BottomNavigationItem(R.drawable.home,"推荐"))
-                .addItem(new BottomNavigationItem(R.drawable.game,"游戏"))
-                .addItem(new BottomNavigationItem(R.drawable.manager,"管理"))
-                .addItem(new BottomNavigationItem(R.drawable.software,"软件"))
+        navigationBar.addItem(new BottomNavigationItem(R.drawable.appgroup, "热点"))
+                .addItem(new BottomNavigationItem(R.drawable.home, "推荐"))
+                .addItem(new BottomNavigationItem(R.drawable.game, "游戏"))
+                .addItem(new BottomNavigationItem(R.drawable.manager, "管理"))
+                .addItem(new BottomNavigationItem(R.drawable.software, "软件"))
                 .initialise();
         navigationBar.setTabSelectedListener(this);
 
@@ -104,7 +122,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabSelected(int position) {
-            viewPager.setCurrentItem(position);
+        viewPager.setCurrentItem(position);
 
     }
 
@@ -125,7 +143,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onPageSelected(int position) {
-            navigationBar.selectTab(position);
+        navigationBar.selectTab(position);
     }
 
     @Override
@@ -140,15 +158,16 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 showShare();
                 break;
             case R.id.my:
-                if (drawerLayout.isDrawerOpen(Gravity.LEFT)){
+                if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
 
                     drawerLayout.closeDrawer(Gravity.LEFT);
-                }else {
+                } else {
                     drawerLayout.openDrawer(Gravity.LEFT);
                 }
                 break;
         }
     }
+
     private void showShare() {
         ShareSDK.initSDK(this);
         OnekeyShare oks = new OnekeyShare();
@@ -174,16 +193,35 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         oks.show(this);
     }
 
-    private void  getMove() {
-        Observer<List<VideoInfo>> observer = new Observer<List<VideoInfo>>() {
+    public void testRxJava() {
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
+                e.onNext("Hello World!!");
+                e.onComplete();
+            }
+        });
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                L.d(s);
+            }
+        });
+        observable.subscribeOn(new Scheduler() {
+            @Override
+            public Worker createWorker() {
+                return null;
+            }
+        });
+        observable.subscribe(new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(List<VideoInfo> videoInfo) {
-
+            public void onNext(String s) {
+                L.d(s + "Observer");
             }
 
             @Override
@@ -195,18 +233,98 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             public void onComplete() {
 
             }
-        };
-        RetrofitUtils retrofitUtils = RetrofitUtils.getInstence();
-        retrofitUtils.getMovie(observer, 0, 10);
+        });
     }
 
-    public void testRxJava(){
-        Observable.just("....").subscribeOn(new Scheduler() {
+    private void testRxJava2() {
+        Flowable.just("Hello World").subscribe(new Subscriber<String>() {
             @Override
-            public Worker createWorker() {
-                return null;
+            public void onSubscribe(Subscription s) {
+                s.request(1);
+            }
+
+            @Override
+            public void onNext(String s) {
+                L.d(s);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
             }
         });
+        Flowable.just("Hello World 2").subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                L.d(s);
+            }
+        });
+        Flowable.just("map").map(new Function<String, String>() {
+            @Override
+            public String apply(@NonNull String s) throws Exception {
+                return s + "Hello World";
+            }
+        }).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                L.d(s);
+            }
+        });
+        List<Integer> data = new ArrayList<>();
+        data.add(1);
+        data.add(2);
+        data.add(3);
+        Flowable.just(data).flatMap(new Function<List<Integer>, Publisher<Integer>>() {
+            @Override
+            public Publisher<Integer> apply(@NonNull List<Integer> integers) throws Exception {
+                return Flowable.fromIterable(integers);
+            }
+        }).filter(new Predicate<Integer>() {
+            @Override
+            public boolean test(@NonNull Integer integer) throws Exception {
+                if (integer > 2) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }).take(2).doOnNext(new Consumer<Integer>() {
+            @Override
+            public void accept(@NonNull Integer integer) throws Exception {
+                L.d("我在你之前" + integer);
+            }
+        }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(@NonNull Integer integer) throws Exception {
+                L.d(integer + "ddd");
+
+            }
+        });
+    }
+
+    private void testRxJava3() {
+        Flowable.create(new FlowableOnSubscribe<String>() {
+            @Override
+            public void subscribe(FlowableEmitter<String> e) throws Exception {
+                e.onNext("将在5秒之后显示");
+                SystemClock.sleep(5000);
+                e.onNext("Hello World");
+            }
+        }, BackpressureStrategy.BUFFER)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                L.d(s);
+            }
+        })
+        ;
     }
 
     @Override
@@ -218,4 +336,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
     }
+
+
 }

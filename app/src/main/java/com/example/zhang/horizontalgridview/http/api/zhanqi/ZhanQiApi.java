@@ -3,6 +3,7 @@ package com.example.zhang.horizontalgridview.http.api.zhanqi;
 import com.example.zhang.horizontalgridview.http.bean.ResultDate;
 import com.example.zhang.horizontalgridview.http.bean.zhanqi.HotLive;
 
+import io.reactivex.Flowable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -34,5 +35,10 @@ public interface ZhanQiApi {
      */
     @GET("static/game.lists/{page}")
     Call<String> Game(@Path("page") String page);
+    /**
+     * 游戏
+     */
+    @GET("static/game.lists/{page}")
+    Flowable<String> test(@Path("page") String page);
 
 }

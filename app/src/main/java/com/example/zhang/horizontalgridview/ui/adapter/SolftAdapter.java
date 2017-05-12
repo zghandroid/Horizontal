@@ -2,7 +2,6 @@ package com.example.zhang.horizontalgridview.ui.adapter;
 
 import com.example.zhang.horizontalgridview.R;
 import com.example.zhang.horizontalgridview.base.MyBaseAdapter;
-import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
 
 import java.util.List;
 

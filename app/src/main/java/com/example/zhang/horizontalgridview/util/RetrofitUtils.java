@@ -1,8 +1,8 @@
 package com.example.zhang.horizontalgridview.util;
 
+import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
 import com.example.zhang.horizontalgridview.ui.MovieInterface;
 import com.example.zhang.horizontalgridview.http.bean.ResultDate;
-import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -46,18 +46,17 @@ public class RetrofitUtils {
                     build();
         }
     }
-    public void getMovie(Observer<List<VideoInfo>> observable, int start, int count){
-        MovieInterface movieInterface=retrofit.create(MovieInterface.class);
-        Observable<ResultDate<VideoInfo>> movie = movieInterface.getMovie(start, count);
-        movie.map(new MoveFunc<VideoInfo>()).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observable);
-    }
-
     private class MoveFunc<T> implements Function<ResultDate<T>, List<T>> {
         @Override
         public List<T> apply(@NonNull ResultDate<T> videoInfos) throws Exception {
             return videoInfos.getData();
+        }
+    }
+    public void getRel(VideoInfo real){
+        if (real.vl.vi != null && real.vl.vi.size() > 0) {
+            String vid = real.vl.vi.get(0).vid;
+            String vkey = real.vl.vi.get(0).fvkey;
+            String url = real.vl.vi.get(0).ul.ui.get(0).url + vid + ".mp4?vkey=" + vkey;
         }
     }
 }

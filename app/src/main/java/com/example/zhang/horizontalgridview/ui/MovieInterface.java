@@ -1,7 +1,6 @@
 package com.example.zhang.horizontalgridview.ui;
 
 import com.example.zhang.horizontalgridview.http.bean.ResultDate;
-import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
 
 
 import io.reactivex.Observable;

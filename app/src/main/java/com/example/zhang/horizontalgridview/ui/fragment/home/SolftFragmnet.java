@@ -10,7 +10,6 @@ import android.widget.ListView;
 
 import com.example.zhang.horizontalgridview.R;
 import com.example.zhang.horizontalgridview.ui.adapter.SolftAdapter;
-import com.example.zhang.horizontalgridview.http.bean.VideoInfo;
 
 import java.util.ArrayList;
 import java.util.List;
